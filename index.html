@@ -304,6 +304,10 @@
         <span>🖼️ 実践編（画像問題）</span>
         <span class="badge">6問</span>
       </button>
+      <button class="menu-btn" onclick="startQuiz('imageBasic')">
+        <span>🧪 画像基礎ドリル</span>
+        <span class="badge">10問</span>
+      </button>
     </div>
   </div>
 
@@ -397,6 +401,18 @@ const ALL_QUIZZES = {
     { "question": "この天気図タイプが日本の冬によく見られるとき、代表的な気圧配置名はどれですか？", "image": "assets/images/fdtext/fdata_r2t6_img-043.png", "caption": "冬型の天気図の例", "options": ["西高東低", "南高北低", "東高西低", "気圧配置に名前はない"], "answer": 0, "explanation": "日本の冬は大陸側が高気圧、太平洋側が低気圧となる「西高東低」が典型です。" },
     { "question": "この図のような同心円状の等圧線が密な低気圧は、何に関連することが多いですか？", "image": "assets/images/fdtext/fdata_r2t6_img-039.png", "caption": "発達した低気圧の例", "options": ["風が強まりやすい", "必ず晴れる", "気温差がなくなる", "降水は起きない"], "answer": 0, "explanation": "等圧線の間隔が狭いほど気圧傾度が大きくなり、風が強く吹きやすくなります。" },
     { "question": "この図のような気圧配置の移り変わりが続く春・秋の特徴として正しいものはどれですか？", "image": "assets/images/fdtext/fdata_r2t6_img-003.png", "caption": "移動性高気圧・低気圧の例", "options": ["天気が数日周期で変わる", "一年中ずっと同じ天気", "毎日必ず雪になる", "毎日台風が来る"], "answer": 0, "explanation": "春・秋は移動性高気圧と低気圧が交互に通るため、天気が数日ごとに変化しやすいです。" }
+  ],
+  "imageBasic": [
+    { "question": "この図の風の向きとして正しいものはどれですか？", "image": "assets/images/basic/wind_high_to_low.svg", "caption": "高気圧と低気圧の基本", "options": ["高気圧から低気圧へ", "低気圧から高気圧へ", "南から北へ必ず吹く", "風は吹かない"], "answer": 0, "explanation": "風は基本的に気圧の高いところから低いところへ吹きます。" },
+    { "question": "この図（北半球の低気圧）で正しい風の回り方はどれですか？", "image": "assets/images/basic/low_nh_wind.svg", "caption": "北半球の低気圧", "options": ["反時計回りで中心に吹き込む", "時計回りで中心に吹き込む", "反時計回りで外へ吹き出す", "時計回りで外へ吹き出す"], "answer": 0, "explanation": "北半球の低気圧では反時計回りに中心へ吹き込みます。" },
+    { "question": "この図（北半球の高気圧）で正しい風の回り方はどれですか？", "image": "assets/images/basic/high_nh_wind.svg", "caption": "北半球の高気圧", "options": ["時計回りで外へ吹き出す", "反時計回りで外へ吹き出す", "時計回りで中心に吹き込む", "反時計回りで中心に吹き込む"], "answer": 0, "explanation": "北半球の高気圧では時計回りに外へ吹き出します。" },
+    { "question": "この前線記号は何を表していますか？", "image": "assets/images/basic/warm_front_symbol.svg", "caption": "前線の記号", "options": ["温暖前線", "寒冷前線", "停滞前線", "閉塞前線"], "answer": 0, "explanation": "赤色で半円が並ぶ記号は温暖前線です。" },
+    { "question": "この前線記号は何を表していますか？", "image": "assets/images/basic/cold_front_symbol.svg", "caption": "前線の記号", "options": ["寒冷前線", "温暖前線", "停滞前線", "閉塞前線"], "answer": 0, "explanation": "青色で三角が並ぶ記号は寒冷前線です。" },
+    { "question": "この前線記号は何を表していますか？", "image": "assets/images/basic/stationary_front_symbol.svg", "caption": "前線の記号", "options": ["停滞前線", "寒冷前線", "温暖前線", "閉塞前線"], "answer": 0, "explanation": "赤の半円と青の三角が交互の記号は停滞前線です。" },
+    { "question": "この前線記号は何を表していますか？", "image": "assets/images/basic/occluded_front_symbol.svg", "caption": "前線の記号", "options": ["閉塞前線", "停滞前線", "寒冷前線", "温暖前線"], "answer": 0, "explanation": "紫色で半円と三角が同じ側につく記号は閉塞前線です。" },
+    { "question": "この図で示す日本の冬の代表的な気圧配置名はどれですか？", "image": "assets/images/basic/winter_pattern.svg", "caption": "冬の気圧配置", "options": ["西高東低", "南高北低", "東高西低", "南低北高"], "answer": 0, "explanation": "冬は大陸側が高気圧・太平洋側が低気圧の西高東低です。" },
+    { "question": "この図で示す日本の夏に多い気圧配置名はどれですか？", "image": "assets/images/basic/summer_pattern.svg", "caption": "夏の気圧配置", "options": ["南高北低", "西高東低", "東高西低", "北高南低"], "answer": 0, "explanation": "夏は太平洋高気圧の勢力で南高北低の傾向になります。" },
+    { "question": "このグラフから読み取れる内容として正しいものはどれですか？", "image": "assets/images/basic/saturated_vapor_graph.svg", "caption": "飽和水蒸気量と気温", "options": ["気温が高いほど飽和水蒸気量は大きい", "気温が高いほど飽和水蒸気量は小さい", "飽和水蒸気量は気温と無関係", "常に一定である"], "answer": 0, "explanation": "気温が上がるほど空気に含める水蒸気の限界量（飽和水蒸気量）は増えます。" }
   ]
 };
 
@@ -442,7 +458,8 @@ function startQuiz(mode) {
     'pressure': '気圧と風・雲のでき方',
     'fronts': '前線と天気の変化',
     'japan': '日本の天気（四季の特徴）',
-    'practical': '🖼️ 実践編（画像問題）'
+    'practical': '🖼️ 実践編（画像問題）',
+    'imageBasic': '🧪 画像基礎ドリル'
   };
   document.getElementById('mode-label').textContent = modeNames[mode];
 
