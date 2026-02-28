@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中1編 地理・気候クイズ</title>
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#a8edea,#fed6e3);margin:0;padding:20px;color:#222}
+    .container{max-width:860px;margin:0 auto}
+    .card{background:#ffffffd9;border-radius:14px;padding:20px;margin-bottom:16px}
+    .menu-btn,.option-btn,.nav-btn{border:none;border-radius:10px;padding:14px;cursor:pointer;font-weight:700}
+    .menu-btn,.nav-btn{background:#007aff;color:#fff;width:100%}
+    .option-btn{width:100%;text-align:left;background:#fff;border:2px solid #eee;margin-bottom:10px}
+    .option-btn.correct{background:#d1fae5;border-color:#22c55e}
+    .option-btn.incorrect{background:#fee2e2;border-color:#ef4444}
+    .hidden{display:none}
+    .rule{background:#eef6ff;border-left:4px solid #007aff;padding:12px;border-radius:8px}
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="start" class="card">
+    <h1>🟦 中1編：地理・気候クイズ</h1>
+    <div class="rule">
+      <strong>時差の超短ルール</strong><br>
+      ・地球は360°を24時間で1回転<br>
+      ・経度15°で1時間<br>
+      ・東に行くほど時刻は進む／西に行くほど遅れる<br>
+      ・時差（時間）＝（相手都市の経度 − 基準都市の経度）÷15
+    </div>
+    <p>都市名ベース（東京・ロンドン・シドニー）で統一した中1学年末レベル20問です。</p>
+    <button class="menu-btn" onclick="startQuiz()">クイズを始める（20問）</button>
+  </div>
+
+  <div id="quiz" class="card hidden">
+    <div id="count"></div>
+    <h2 id="q"></h2>
+    <div id="opts"></div>
+    <div id="exp" class="hidden"></div>
+    <button id="next" class="nav-btn hidden" onclick="nextQ()">次へ</button>
+  </div>
+
+  <div id="result" class="card hidden">
+    <h2>結果</h2>
+    <p id="score"></p>
+    <button class="menu-btn" onclick="location.reload()">もう一度</button>
+    <button class="menu-btn" style="margin-top:10px;background:#10b981" onclick="location.href='./chu2_weather.html'">中2編（天気）へ進む</button>
+  </div>
+</div>
+<script>
+const QUESTIONS = [
+{q:'緯度は何を表すか。',o:['南北の位置','東西の位置','高さ','気温'],a:0,e:'緯度は赤道を基準に南北の位置を表します。'},
+{q:'経度0°の基準となる経線は何か。',o:['赤道','本初子午線','北回帰線','日付変更線'],a:1,e:'経度0°の基準は本初子午線です。'},
+{q:'東京（約北緯36°）は北半球か南半球か。',o:['北半球','南半球'],a:0,e:'東京は赤道より北なので北半球です。'},
+{q:'同じ緯度上の地点は、どの位置関係が同じになりやすいか。',o:['南北の位置','東西の位置'],a:0,e:'緯度は南北方向の位置を示します。'},
+{q:'経度が大きく違うと変わりやすいのは何か。',o:['季節','時刻','標高','人口'],a:1,e:'経度差は時差に直結します。'},
+{q:'東京135°Eとロンドン0°の時差は何時間か。',o:['9時間','6時間','12時間','3時間'],a:0,e:'経度差135°÷15=9時間。'},
+{q:'東京が12:00のとき、ロンドンは何時か（夏時間なし）。',o:['03:00','21:00','06:00','15:00'],a:0,e:'ロンドンは東京より9時間遅いので03:00。'},
+{q:'東京135°Eとシドニー150°Eの時差は何時間か。',o:['1時間','2時間','3時間','0時間'],a:0,e:'経度差15°なので1時間。'},
+{q:'東京が20:00のとき、シドニーは何時か（夏時間なし）。',o:['18:00','21:00','22:00','23:00'],a:1,e:'シドニーは東京より1時間進んで21:00。'},
+{q:'時差を求めるのに使う基本はどれか。',o:['経度差÷15','緯度差÷15','経度差×24','緯度差×24'],a:0,e:'時差は経度差を15で割って求めます。'},
+{q:'地球温暖化の主な要因として正しいものはどれか。',o:['温室効果ガスの増加','月の満ち欠け','火山だけ','地軸の傾きだけ'],a:0,e:'二酸化炭素など温室効果ガスの増加が主因です。'},
+{q:'温室効果ガスの例として正しいものはどれか。',o:['二酸化炭素','酸素','窒素のみ','ヘリウム'],a:0,e:'代表例は二酸化炭素です。'},
+{q:'温暖化の影響として考えられるものはどれか。',o:['海面上昇','地震増加だけ','重力低下','昼夜逆転'],a:0,e:'氷床融解などで海面上昇が懸念されます。'},
+{q:'温暖化対策として適切なのはどれか。',o:['省エネ','化石燃料の大量使用','森林伐採を増やす','ごみを増やす'],a:0,e:'省エネは排出削減に有効です。'},
+{q:'赤道付近に多い気候はどれか。',o:['熱帯','乾燥帯','冷帯','寒帯'],a:0,e:'赤道付近は高温で熱帯が分布します。'},
+{q:'砂漠が多い地域に多い気候はどれか。',o:['乾燥帯','温帯','冷帯','熱帯雨林気候'],a:0,e:'砂漠地域は乾燥帯です。'},
+{q:'オーストラリアの内陸部に多い気候はどれか。',o:['乾燥した気候','寒帯','亜寒帯','氷雪気候'],a:0,e:'内陸部は乾燥地域が広いです。'},
+{q:'オーストラリア東岸（シドニー周辺）の特徴として近いものはどれか。',o:['比較的温暖で降水もある','一年中氷点下','ほぼ無降水','ツンドラ'],a:0,e:'東岸は比較的温暖で降水も見られます。'},
+{q:'日本が夏のとき、オーストラリアはどうなりやすいか。',o:['冬','春','同じく夏','季節はない'],a:0,e:'南半球なので季節が逆です。'},
+{q:'世界の気候を分けるときに特に関係が深いものはどれか。',o:['気温と降水量','人口密度だけ','通貨','言語'],a:0,e:'気候区分は主に気温と降水量で分類します。'}
+];
+let i=0,score=0;
+function startQuiz(){document.getElementById('start').classList.add('hidden');document.getElementById('quiz').classList.remove('hidden');render();}
+function render(){const q=QUESTIONS[i];document.getElementById('count').textContent=`Q ${i+1} / ${QUESTIONS.length}`;document.getElementById('q').textContent=q.q;const opts=document.getElementById('opts');opts.innerHTML='';document.getElementById('exp').classList.add('hidden');document.getElementById('next').classList.add('hidden');q.o.forEach((t,idx)=>{const b=document.createElement('button');b.className='option-btn';b.textContent=t;b.onclick=()=>answer(idx,b);opts.appendChild(b);});}
+function answer(idx,btn){const q=QUESTIONS[i];document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);if(idx===q.a){score++;btn.classList.add('correct');}else{btn.classList.add('incorrect');document.querySelectorAll('.option-btn')[q.a].classList.add('correct');}const exp=document.getElementById('exp');exp.textContent='解説: '+q.e;exp.classList.remove('hidden');document.getElementById('next').classList.remove('hidden');}
+function nextQ(){i++;if(i<QUESTIONS.length){render();}else{document.getElementById('quiz').classList.add('hidden');document.getElementById('result').classList.remove('hidden');document.getElementById('score').textContent=`${QUESTIONS.length}問中 ${score}問正解`;}}
+</script>
+</body>
+</html>
