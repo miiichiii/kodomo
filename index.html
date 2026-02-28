@@ -284,29 +284,36 @@
     </div>
     
     <div class="menu-grid">
-      <button class="menu-btn primary" onclick="startQuiz('all')">
-        <span>🔥 全問からランダム出題</span>
+      <button class="menu-btn primary" onclick="startQuiz('superBasic')">
+        <span>🟦 中1向け（緯度・経度 / 時差 / 気候）</span>
       </button>
-      
+      <button class="menu-btn primary" onclick="startQuiz('weatherAll')" style="margin-top:8px;">
+        <span>🟩 中2向け（天気）全問題チャレンジ</span>
+      </button>
+
       <button class="menu-btn" onclick="startQuiz('pressure')">
-        <span>気圧と風・雲のでき方</span>
+        <span>【中2天気】気圧と風・雲のでき方</span>
         <span class="badge">10問</span>
       </button>
       <button class="menu-btn" onclick="startQuiz('fronts')">
-        <span>前線と天気の変化</span>
+        <span>【中2天気】前線と天気の変化</span>
         <span class="badge">10問</span>
       </button>
       <button class="menu-btn" onclick="startQuiz('japan')">
-        <span>日本の天気（四季の特徴）</span>
+        <span>【中2天気】日本の天気（四季の特徴）</span>
         <span class="badge">10問</span>
       </button>
       <button class="menu-btn" onclick="startQuiz('practical')">
-        <span>🖼️ 実践編（画像問題）</span>
+        <span>【中2天気】🖼️ 実践編（画像問題）</span>
         <span class="badge">6問</span>
       </button>
       <button class="menu-btn" onclick="startQuiz('imageBasic')">
-        <span>🧪 画像基礎ドリル</span>
+        <span>【中2天気】🧪 画像基礎ドリル</span>
         <span class="badge">10問</span>
+      </button>
+      <button class="menu-btn" onclick="startQuiz('practicalAll')">
+        <span>【中1+中2】実践編（全問題チャレンジ）</span>
+        <span class="badge">全部</span>
       </button>
     </div>
   </div>
@@ -351,6 +358,7 @@
 
     <div class="result-actions">
       <button class="action-btn" onclick="showStartScreen()">🏠 メニューに戻る</button>
+      <button id="next-stage-btn" class="action-btn primary hidden" onclick="startQuiz('weatherAll')">🚀 次へ：中2天気（全問題）へ</button>
       <button class="action-btn primary" onclick="retryQuiz()">🔄 もう一度やる</button>
     </div>
   </div>
@@ -358,6 +366,18 @@
 
 <script>
 const ALL_QUIZZES = {
+  "superBasic": [
+    { "question": "地球上の位置を南北で表すのはどれですか？", "options": ["緯度", "経度", "標高", "時差"], "answer": 0, "explanation": "緯度は赤道を0°として、北と南の位置を表します。" },
+    { "question": "地球上の位置を東西で表すのはどれですか？", "options": ["経度", "緯度", "海抜", "湿度"], "answer": 0, "explanation": "経度は本初子午線を0°として、東西の位置を表します。" },
+    { "question": "経度0°の基準となる線はどれですか？", "options": ["本初子午線", "赤道", "北回帰線", "日付変更線"], "answer": 0, "explanation": "イギリスのグリニッジを通る本初子午線が経度0°です。" },
+    { "question": "時差を計算するときの基本はどれですか？", "options": ["経度15°で1時間", "経度10°で1時間", "緯度15°で1時間", "緯度30°で1時間"], "answer": 0, "explanation": "地球は24時間で360°回るので、15°で1時間です。" },
+    { "question": "東京（東経約135°）とロンドン（0°）の時差は何時間ですか？", "options": ["9時間", "3時間", "6時間", "12時間"], "answer": 0, "explanation": "経度差135° ÷ 15 = 9時間。東京の方が9時間進んでいます。" },
+    { "question": "地球温暖化の主な原因として正しいものはどれですか？", "options": ["温室効果ガスの増加", "月の満ち欠け", "地軸の傾きだけ", "潮の満ち引き"], "answer": 0, "explanation": "二酸化炭素など温室効果ガスの増加が大きな要因です。" },
+    { "question": "赤道付近に多い気候帯はどれですか？", "options": ["熱帯", "乾燥帯", "冷帯", "寒帯"], "answer": 0, "explanation": "赤道に近いほど一年を通して気温が高く、熱帯になりやすいです。" },
+    { "question": "雨が少なく砂漠が多い地域に多い気候帯はどれですか？", "options": ["乾燥帯", "温帯", "冷帯", "熱帯"], "answer": 0, "explanation": "降水量が少ない地域は乾燥帯に分類されます。" },
+    { "question": "オーストラリアの内陸部に多い気候の特徴はどれですか？", "options": ["乾燥している", "一年中雪が多い", "一年中多雨", "一年中氷点下"], "answer": 0, "explanation": "オーストラリア内陸は乾燥した地域が広く分布します。" },
+    { "question": "日本が夏のころ、オーストラリアはどうなりやすいですか？", "options": ["冬", "同じく夏", "季節は変わらない", "常に春"], "answer": 0, "explanation": "南半球のオーストラリアは日本（北半球）と季節が逆になります。" }
+  ],
   "pressure": [
     { "question": "空気が温められると、空気の密度と気圧はどうなりますか？", "options": ["密度は小さくなり、気圧は低くなる", "密度は大きくなり、気圧は高くなる", "密度は小さくなり、気圧は高くなる", "密度は大きくなり、気圧は低くなる"], "answer": 0, "explanation": "空気が温められると膨張するため、密度が小さく（軽く）なり上昇気流が生じます。その結果、地表付近の気圧は低くなります（低気圧）。" },
     { "question": "風は気圧がどのような場所からどのような場所に向かって吹きますか？", "options": ["気圧の高いところから低いところへ", "気圧の低いところから高いところへ", "気圧に関係なく吹く", "上空から地上へ"], "answer": 0, "explanation": "風は常に、気圧の高いところ（高気圧）から低いところ（低気圧）に向かって吹きます。" },
@@ -437,11 +457,14 @@ function startQuiz(mode) {
   currentMode = mode;
   let questions = [];
 
-  if (mode === 'all') {
+  if (mode === 'weatherAll') {
+    ['pressure','fronts','japan','practical','imageBasic'].forEach(k => questions.push(...ALL_QUIZZES[k]));
+    questions = shuffleArray(questions);
+  } else if (mode === 'practicalAll') {
     Object.values(ALL_QUIZZES).forEach(arr => questions.push(...arr));
     questions = shuffleArray(questions);
   } else {
-    questions = [...ALL_QUIZZES[mode]]; 
+    questions = [...ALL_QUIZZES[mode]];
     questions = shuffleArray(questions);
   }
 
@@ -454,7 +477,9 @@ function startQuiz(mode) {
   document.getElementById('quiz-screen').classList.remove('hidden');
 
   const modeNames = {
-    'all': '🔥 全問チャレンジ',
+    'superBasic': '① 超基礎問題コーナー',
+    'weatherAll': '🟩 中2向け（天気）全問題',
+    'practicalAll': '【中1+中2】実践編（全問題）',
     'pressure': '気圧と風・雲のでき方',
     'fronts': '前線と天気の変化',
     'japan': '日本の天気（四季の特徴）',
@@ -583,6 +608,13 @@ function showResult() {
   const wrongItems = document.getElementById('wrong-items');
   wrongItems.innerHTML = '';
   
+  const nextStageBtn = document.getElementById('next-stage-btn');
+  if (currentMode === 'superBasic') {
+    nextStageBtn.classList.remove('hidden');
+  } else {
+    nextStageBtn.classList.add('hidden');
+  }
+
   const wrongs = userAnswers.filter(a => !a.isCorrect);
   if (wrongs.length > 0) {
     wrongList.style.display = 'block';
