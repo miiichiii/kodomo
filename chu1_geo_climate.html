@@ -33,9 +33,10 @@ if(m==='all'){qs=[];Object.values(BANK).forEach(v=>qs.push(...v.items));qs=shuff
 i=0;score=0;render();}
 function render(){const q=qs[i];document.getElementById('meta').textContent=`${mode==='all'?'実践編（全80問）':BANK[mode].label} / Q ${i+1} / ${qs.length}`;document.getElementById('q').textContent=q.q;
 const opts=document.getElementById('opts');opts.innerHTML='';document.getElementById('exp').classList.add('hidden');document.getElementById('next').classList.add('hidden');
-q.o.forEach((t,idx)=>{const b=document.createElement('button');b.className='option';b.textContent=t;b.onclick=()=>answer(idx,b);opts.appendChild(b);});
+const shuffled = shuffle(q.o.map((t,idx)=>({text:t,isCorrect:idx===q.a})));
+shuffled.forEach((opt)=>{const b=document.createElement('button');b.className='option';b.textContent=opt.text;b.onclick=()=>answer(opt.isCorrect,b);opts.appendChild(b);});
 }
-function answer(idx,btn){const q=qs[i];document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(idx===q.a){score++;btn.classList.add('correct');}else{btn.classList.add('incorrect');document.querySelectorAll('.option')[q.a].classList.add('correct');}
+function answer(isCorrect,btn){const q=qs[i];const buttons=[...document.querySelectorAll('.option')];buttons.forEach(b=>b.disabled=true);if(isCorrect){score++;btn.classList.add('correct');}else{btn.classList.add('incorrect');buttons.forEach(b=>{if(b.textContent===q.o[q.a]) b.classList.add('correct');});}
 const exp=document.getElementById('exp');exp.textContent='解説: '+q.e;exp.classList.remove('hidden');document.getElementById('next').classList.remove('hidden');}
 function nextQ(){i++;if(i<qs.length)render();else{document.getElementById('quiz').classList.add('hidden');document.getElementById('result').classList.remove('hidden');document.getElementById('score').textContent=`${qs.length}問中 ${score}問正解`;}}
 </script></body></html>
